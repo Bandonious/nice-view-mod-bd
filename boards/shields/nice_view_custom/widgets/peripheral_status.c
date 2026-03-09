@@ -68,10 +68,10 @@ static const lv_img_dsc_t *outro_frames[] = {
 // Timing constants (ms)
 // ---------------------------------------------------------------------------
 #define FRAME_DURATION_MS     200
-#define BLINK_INTERVAL_MIN_MS 3000
-#define BLINK_INTERVAL_MAX_MS 5000
-#define OUTRO_INTERVAL_MIN_MS 10000
-#define OUTRO_INTERVAL_MAX_MS 20000
+#define BLINK_INTERVAL_MIN_MS 1000
+#define BLINK_INTERVAL_MAX_MS 8000
+#define OUTRO_INTERVAL_MIN_MS 30000
+#define OUTRO_INTERVAL_MAX_MS 50000
 
 // ---------------------------------------------------------------------------
 // State machine
@@ -102,13 +102,15 @@ static void show_frame(const lv_img_dsc_t *frame) {
     }
 }
 
-static void enter_idle(void) {
+static void enter_idle(bool reset_outro) {
     anim_state    = STATE_IDLE;
     current_frame = 0;
     k_timer_stop(&frame_timer);
     show_frame(&beasthead_017);
     k_timer_start(&blink_timer, K_MSEC(rand_range(BLINK_INTERVAL_MIN_MS, BLINK_INTERVAL_MAX_MS)), K_NO_WAIT);
-    k_timer_start(&outro_timer, K_MSEC(rand_range(OUTRO_INTERVAL_MIN_MS, OUTRO_INTERVAL_MAX_MS)), K_NO_WAIT);
+    if (reset_outro) {
+        k_timer_start(&outro_timer, K_MSEC(rand_range(OUTRO_INTERVAL_MIN_MS, OUTRO_INTERVAL_MAX_MS)), K_NO_WAIT);
+    }
 }
 
 static void anim_work_handler(struct k_work *work) {
@@ -117,14 +119,14 @@ static void anim_work_handler(struct k_work *work) {
         show_frame(intro_frames[current_frame]);
         current_frame++;
         if (current_frame >= INTRO_FRAME_COUNT) {
-            enter_idle();
+            enter_idle(true);  // fresh start, set both timers
         }
         break;
     case STATE_BLINK:
         show_frame(blink_frames[current_frame]);
         current_frame++;
         if (current_frame >= BLINK_FRAME_COUNT) {
-            enter_idle();
+            enter_idle(false);  // don't reset outro timer
         }
         break;
     case STATE_OUTRO:
