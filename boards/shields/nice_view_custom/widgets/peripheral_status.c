@@ -54,15 +54,15 @@ static const lv_img_dsc_t *intro_frames[] = {
 #define INTRO_FRAME_COUNT 16
 
 static const lv_img_dsc_t *blink_frames[] = {
-    &beasthead_018, &beasthead_019, &beasthead_020,
+    &beasthead_017, &beasthead_018, &beasthead_019, &beasthead_020,
 };
-#define BLINK_FRAME_COUNT 3
+#define BLINK_FRAME_COUNT 4
 
 static const lv_img_dsc_t *outro_frames[] = {
     &beasthead_021, &beasthead_022, &beasthead_023, &beasthead_024,
-    &beasthead_025, &beasthead_026, &beasthead_027,
+    &beasthead_025, &beasthead_026,
 };
-#define OUTRO_FRAME_COUNT 7
+#define OUTRO_FRAME_COUNT 6
 
 // ---------------------------------------------------------------------------
 // Timing constants (ms)
@@ -106,7 +106,7 @@ static void enter_idle(bool reset_outro) {
     anim_state    = STATE_IDLE;
     current_frame = 0;
     k_timer_stop(&frame_timer);
-    show_frame(&beasthead_017);
+    show_frame(&beasthead_016);
     k_timer_start(&blink_timer, K_MSEC(rand_range(BLINK_INTERVAL_MIN_MS, BLINK_INTERVAL_MAX_MS)), K_NO_WAIT);
     if (reset_outro) {
         k_timer_start(&outro_timer, K_MSEC(rand_range(OUTRO_INTERVAL_MIN_MS, OUTRO_INTERVAL_MAX_MS)), K_NO_WAIT);
