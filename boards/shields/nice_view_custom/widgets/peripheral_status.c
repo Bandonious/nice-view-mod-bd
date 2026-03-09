@@ -160,6 +160,9 @@ static void outro_timer_cb(struct k_timer *t) {
         anim_state    = STATE_OUTRO;
         current_frame = 0;
         k_timer_start(&frame_timer, K_MSEC(FRAME_DURATION_MS), K_MSEC(FRAME_DURATION_MS));
+    } else {
+        // Not idle right now, try again in 5 seconds
+        k_timer_start(&outro_timer, K_MSEC(5000), K_NO_WAIT);
     }
 }
 
