@@ -245,11 +245,11 @@ int zmk_widget_status_init(struct zmk_widget_status *widget, lv_obj_t *parent) {
     lv_obj_align(top, LV_ALIGN_TOP_RIGHT, 0, 0);
     lv_canvas_set_buffer(top, widget->cbuf, CANVAS_SIZE, CANVAS_SIZE, LV_IMG_CF_TRUE_COLOR);
 
-    lv_obj_set_style_bg_color(widget->obj, lv_color_white(), LV_PART_MAIN);
+    lv_obj_set_style_bg_color(widget->obj, lv_color_black(), LV_PART_MAIN);
     lv_obj_set_style_bg_opa(widget->obj, LV_OPA_COVER, LV_PART_MAIN);
 
     art_img = lv_img_create(widget->obj);
-    lv_obj_set_style_img_recolor(art_img, lv_color_black(), LV_PART_MAIN);
+    lv_obj_set_style_img_recolor(art_img, lv_color_white(), LV_PART_MAIN);
     lv_obj_set_style_img_recolor_opa(art_img, LV_OPA_COVER, LV_PART_MAIN);
     lv_obj_align(art_img, LV_ALIGN_TOP_LEFT, 0, 0);
 
